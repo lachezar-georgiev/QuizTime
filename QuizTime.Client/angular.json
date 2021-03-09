@@ -1,0 +1,128 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "QuizTimeClient": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/quiz-time-app",
+      "sourceRoot": "projects/quiz-time-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/QuizTimeClient",
+            "index": "projects/quiz-time-app/src/index.html",
+            "main": "projects/quiz-time-app/src/main.ts",
+            "polyfills": "projects/quiz-time-app/src/polyfills.ts",
+            "tsConfig": "projects/quiz-time-app/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/quiz-time-app/src/favicon.ico",
+              "projects/quiz-time-app/src/assets"
+            ],
+            "styles": [
+              "projects/quiz-time-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/quiz-time-app/src/environments/environment.ts",
+                  "with": "projects/quiz-time-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "QuizTimeClient:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "QuizTimeClient:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "QuizTimeClient:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/quiz-time-app/src/test.ts",
+            "polyfills": "projects/quiz-time-app/src/polyfills.ts",
+            "tsConfig": "projects/quiz-time-app/tsconfig.spec.json",
+            "karmaConfig": "projects/quiz-time-app/karma.conf.js",
+            "assets": [
+              "projects/quiz-time-app/src/favicon.ico",
+              "projects/quiz-time-app/src/assets"
+            ],
+            "styles": [
+              "projects/quiz-time-app/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/quiz-time-app/tsconfig.app.json",
+              "projects/quiz-time-app/tsconfig.spec.json",
+              "projects/quiz-time-app/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/quiz-time-app/e2e/protractor.conf.js",
+            "devServerTarget": "QuizTimeClient:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "QuizTimeClient:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "QuizTimeClient"
+}

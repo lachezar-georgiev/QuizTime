@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="echo Attempting to buld the client application with configuration: $(ConfigurationName).&#xD;&#xA;IF $(ConfigurationName) == Debug (&#xD;&#xA;  npm install&#xD;&#xA;  cd &quot;wwwroot&quot;&#xD;&#xA;  del *.ico, *.html, *.js, *.map, *.css, *.txt&#xD;&#xA;  npm run build  &#xD;&#xA;) ELSE IF $(ConfigurationName) == Release (&#xD;&#xA;  npm install&#xD;&#xA;  cd &quot;wwwroot&quot;&#xD;&#xA;  del *.ico, *.html, *.js, *.map, *.css, *.txt&#xD;&#xA;  npm run build-prod&#xD;&#xA;)&#xD;&#xA;" />
+  </Target>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(ProjectDir)dist\QuizTimeClient\*&quot; &quot;$(ProjectDir)wwwroot\*&quot; /e /y /i /r" />
+  </Target>
+
+</Project>
