@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizTime.Api", "QuizTime.Api\QuizTime.Api.csproj", "{DBBBC38D-67F3-4B1F-BF7A-1493E1A7C579}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizTime.Client", "QuizTime.Client\QuizTime.Client.csproj", "{D293F02A-A3C4-445D-A9F1-6A3AE369E2B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizTime.Client", "QuizTime.Client\QuizTime.Client.csproj", "{D293F02A-A3C4-445D-A9F1-6A3AE369E2B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizTime.Common", "QuizTime.Common\QuizTime.Common.csproj", "{CF7B692A-F37C-4B09-992D-71BD51FAEEDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D293F02A-A3C4-445D-A9F1-6A3AE369E2B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D293F02A-A3C4-445D-A9F1-6A3AE369E2B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D293F02A-A3C4-445D-A9F1-6A3AE369E2B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7B692A-F37C-4B09-992D-71BD51FAEEDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7B692A-F37C-4B09-992D-71BD51FAEEDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7B692A-F37C-4B09-992D-71BD51FAEEDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7B692A-F37C-4B09-992D-71BD51FAEEDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
