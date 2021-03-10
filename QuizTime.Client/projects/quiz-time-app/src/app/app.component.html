@@ -1,6 +1,12 @@
+<header>
+    <h1>It's Quiz Time!</h1>
+</header>
+
 <nav class="flex-container">
-    <a href="#" class="flex-item">Home</a>
+    <a href="#" class="flex-item" routerLink="/">Home</a>
     <a href="#" class="flex-item">Results</a>
-    <a href="#" class="flex-item">New Quiz</a>
+    <a href="#" class="flex-item" routerLink="/quiz">New Quiz</a>
     <a href="#" class="flex-item">About</a>
 </nav>
+
+<router-outlet></router-outlet>

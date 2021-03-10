@@ -1,1 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    margin: 0.25em;
+    padding: 0.25em;
+    font-family: 'Roboto', sans-serif;
+}
+
+.subtitle {
+    text-align: center;
+    display: block
+}
+
+.primary {
+    border-radius: 10px;
+    background: #5ce500;
+    color: white;
+    line-height: 2em;
+    border: 1px solid #dddddd;
+    font-weight: bold;
+    font-size: 1.5em;
+    cursor: pointer;
+    &:hover{
+        background: tomato;
+        border: none;
+    }
+}
