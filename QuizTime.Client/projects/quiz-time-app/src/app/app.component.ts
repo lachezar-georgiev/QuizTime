@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { QuizService } from './services/quiz.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'QuizTime';
+
+  private readonly subscription: Subscription = new Subscription();
+  public quizInProgress: boolean;
+
+  constructor(private quizService: QuizService) {
+        this.subscription.add(this.quizService.quizInProgress$
+          .subscribe((quizInProgress: boolean) => this.quizInProgress = quizInProgress));
+   }
+
+
 }

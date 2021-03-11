@@ -1,8 +1,23 @@
-<div class="question-page-container">
-    <app-question [question]="(currentQuestion | async)" [questionScore]="!(currentQuestion | async)?.isAnswered"></app-question>
-    <button (click)="onNextQuestion()"
-        [disabled]="!(currentQuestion | async)?.isAnswered" 
-        [ngClass]="{'hidden-element' : !(currentQuestion | async)?.isAnswered}"
-          class="tertiary">{{ showButtonLabel() }}
-    </button>
+<div [ngClass]="{'modal-overlay' : isModalVisible}">
+  <div class="question-page-container">
+      <app-question [question]="(currentQuestion | async)" [questionScore]="!(currentQuestion | async)?.isAnswered" (questionResultChanged)="addQuestionResult($event)"></app-question>
+      <button (click)="onNextQuestion()"
+          [disabled]="!(currentQuestion | async)?.isAnswered" 
+          [ngClass]="{'hidden-element' : !(currentQuestion | async)?.isAnswered}"
+            class="tertiary">{{ showButtonLabel() }}
+      </button>
+  </div>
+
+  <div [ngClass]="{
+    'modal-container': isModalVisible,
+    'hidden-element' : !isModalVisible}">  
+      <div class="modal-content">
+        <div class="container">
+            <h2>A quiz is already in progress.</h2>
+            <p>Start a new quiz and reset points?</p>
+          <button (click)="toggleModal()" class="secondary">Yes, start a new quz!</button>
+          <button (click)="toggleModal()" class="tertiary">No, let me go back.</button>
+        </div>
+      </div>
+  </div>
 </div>

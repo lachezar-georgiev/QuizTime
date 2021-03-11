@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Question } from '../../common/models/question';
+import { QuestionService } from '../../services/question.service';
 
 @Component({
   selector: 'app-question',
@@ -10,26 +12,43 @@ export class QuestionComponent implements OnInit {
 
   @Input()
   public question: Question;
-  public isRadioButtonChecked: boolean = false;
 
   @Input()
   public questionScore: boolean;
 
+  public isRadioButtonChecked: boolean = false;
+
+  private subscription: Subscription = new Subscription();
+
+  @Output()
+  public questionResultChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   public currentSelectedAnswer: string;
+  public currentCorrectAnswer: string;
 
   public isModalVisible: boolean = false;
 
   public questionIds: string[] = ['A', 'B', 'C', 'D'];
 
-  constructor() { }
+  constructor(private questionService: QuestionService) {
+    this.subscription.add(this.questionService.currentQuestion$
+      .subscribe((currentQuestion: Question) => this.currentCorrectAnswer = currentQuestion.answer));
+  }
 
   ngOnInit(): void {
   }
 
   onCompleteQuestion() {
-    if(this.isModalVisible) {
+    if (this.isModalVisible) {
       this.isModalVisible = !this.isModalVisible;
     }
+
+    if (this.currentSelectedAnswer === this.currentCorrectAnswer) {
+      this.onQuestionResultChanged(true);
+    } else {
+      this.onQuestionResultChanged(false)
+    }
+
     this.question.isAnswered = true;
     this.isRadioButtonChecked = false;
   }
@@ -39,15 +58,18 @@ export class QuestionComponent implements OnInit {
     this.currentSelectedAnswer = currentSelectedAnswer;
   }
 
-  checkIfAnswerIsValid():boolean {
-    console.log(this.currentSelectedAnswer === this.question.answer);
+  checkIfAnswerIsValid(): boolean {
     return this.currentSelectedAnswer === this.question.answer;
   }
 
   toggleModal() {
-    if(this.isRadioButtonChecked) {
+    if (this.isRadioButtonChecked) {
       this.isModalVisible = !this.isModalVisible;
-    } 
+    }
+  }
+
+  onQuestionResultChanged(questionResult: boolean) {
+    this.questionResultChanged.emit(questionResult);
   }
 
 }
