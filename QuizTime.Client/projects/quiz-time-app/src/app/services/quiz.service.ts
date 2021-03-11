@@ -6,11 +6,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class QuizService {
   public readonly quizInProgress$: Observable<boolean>;
-  public readonly results$: Observable<boolean[]>;
+  public readonly results$: Observable<number[]>;
 
   private readonly quizInProgress$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private readonly results$$: BehaviorSubject<boolean[]> = new BehaviorSubject<boolean[]>([]);
-  private results: boolean[] = [];
+  private readonly results$$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  private results: number[] = [];
 
   constructor() {
         this.quizInProgress$ = this.quizInProgress$$.asObservable();
@@ -29,12 +29,12 @@ export class QuizService {
     return this.quizInProgress$;
   }
 
-  addResult(result: boolean): void {
+  addResult(result: number): void {
     this.results.push(result);
     this.results$$.next([...this.results]);
   }
 
-  getResults(): Observable<boolean[]> {
+  getResults(): Observable<number[]> {
     return this.results$$.asObservable();
   }
 }

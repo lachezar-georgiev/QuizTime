@@ -1,6 +1,15 @@
-<h3>Results from last quiz:</h3>
-    <ul>
-        <li *ngFor="let result of results">
-            {{result}}
-        </li>
-    </ul>
+<div *ngIf="pieChartData.length; else noresults">
+    <h3>Results from last quiz:</h3>
+
+<div style="display: block">
+    <canvas baseChart
+            [data]="pieChartData"
+            [colors]="colors"
+            [labels]="pieChartLabels"
+            [chartType]="pieChartType"></canvas>
+  </div>
+</div>
+<ng-template #noresults>
+    <h3>No results yet, please start a quiz!</h3>
+</ng-template>
+

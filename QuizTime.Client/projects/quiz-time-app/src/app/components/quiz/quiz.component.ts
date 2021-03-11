@@ -50,14 +50,14 @@ export class QuizComponent implements OnInit {
 
   finishQuiz(): void {
     this.quizService.finishQuiz();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/results']);
   }
 
   toggleModal() {
     this.isModalVisible = !this.isModalVisible;
   }
 
-  addQuestionResult(questionResult: boolean) {
+  addQuestionResult(questionResult: number) {
     this.quizService.addResult(questionResult);
   }
 }
