@@ -1,0 +1,50 @@
+<div [ngClass]="{'modal-overlay' : isModalVisible}">
+
+<div class="card">
+    <div class='row'>
+        <div class='column'>
+            <div>
+                <h2>Category: {{ question.category }}</h2>
+                <div class="question-content-label">{{ question.content }}</div>
+                <ul>
+                    <li *ngFor="let questionAnswer of question.possibleAnswers; let i = index;">
+                        <input type="radio" name="whatever" [id]="questionIds[i] + i" [value]="questionAnswer"
+                            [checked]="isRadioButtonClear" (input)="onInput(questionAnswer)" [disabled]="question.isAnswered || isModalVisible" />
+                        <label [for]="questionIds[i] + i">
+                            <strong>{{ questionIds[i] }}.</strong>
+                            {{ questionAnswer }}
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="column alert-box" *ngIf="question.isAnswered"
+            [ngClass]="{
+            'correct-answer' : !checkIfAnswerIsValid(),
+            'wrong-answer' : checkIfAnswerIsValid()}">
+            The selected answer: "{{ currentSelectedAnswer }}" is {{ this.currentSelectedAnswer === this.question.answer ? "correct!" : "wrong!" }}
+        </div>
+    </div>
+</div>
+
+</div>
+
+<button class="secondary"
+        [disabled]="!isRadioButtonChecked"
+        [ngClass]="{'hidden-element' : isModalVisible, 'disabled-btn' : !isRadioButtonChecked }"
+        (click)="toggleModal()">Check Answer
+</button>
+
+<div [ngClass]="{
+    'modal-container': isModalVisible,
+    'hidden-element' : !isModalVisible}">  
+    <div id="id01">
+      <div class="modal-content">
+        <div class="container">
+            <h2>Confirm selected answer</h2>
+          <button (click)="onCompleteQuestion()" class="secondary">Yes, Confirm</button>
+          <button (click)="toggleModal()" class="tertiary">No, let me go back</button>
+        </div>
+      </div>
+    </div>
+</div>

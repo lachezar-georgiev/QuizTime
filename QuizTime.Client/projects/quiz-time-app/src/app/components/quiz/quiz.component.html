@@ -1,1 +1,8 @@
-<p>quiz works!</p>
+<div class="question-page-container">
+    <app-question [question]="(currentQuestion | async)" [questionScore]="!(currentQuestion | async)?.isAnswered"></app-question>
+    <button (click)="onNextQuestion()"
+        [disabled]="!(currentQuestion | async)?.isAnswered" 
+        [ngClass]="{'hidden-element' : !(currentQuestion | async)?.isAnswered}"
+          class="tertiary">{{ showButtonLabel() }}
+    </button>
+</div>
