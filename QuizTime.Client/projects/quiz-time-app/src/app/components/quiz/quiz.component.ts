@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Question } from '../../common/models/question';
 import { QuestionService } from '../../services/question.service';
@@ -10,8 +10,8 @@ import { QuizService } from '../../services/quiz.service';
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.scss']
 })
-export class QuizComponent implements OnInit {
-  public currentQuestion: Observable<Question>;
+export class QuizComponent implements OnInit, OnDestroy {
+  public currentQuestion$: Observable<Question>;
   public quizInProgress: boolean;
   public isModalVisible: boolean;
 
@@ -33,7 +33,11 @@ export class QuizComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.currentQuestion = this.questionService.getCurrentQuestion();
+    this.currentQuestion$ = this.questionService.getCurrentQuestion();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onNextQuestion(){

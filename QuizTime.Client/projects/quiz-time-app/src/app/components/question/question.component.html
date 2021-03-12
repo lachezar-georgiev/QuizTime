@@ -4,7 +4,7 @@
     <div class='row'>
         <div class='column'>
             <div>
-                <h2>Category: {{ question.category }}</h2>
+                <h2>Category: {{ question ? question.category : 'nada'}}</h2>
                 <div class="question-content-label">{{ question.content }}</div>
                 <ul>
                     <li *ngFor="let questionAnswer of question.possibleAnswers; let i = index;">

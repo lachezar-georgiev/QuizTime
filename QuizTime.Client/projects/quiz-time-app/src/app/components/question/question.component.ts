@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Question } from '../../common/models/question';
 import { QuestionService } from '../../services/question.service';
@@ -8,7 +8,7 @@ import { QuestionService } from '../../services/question.service';
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss']
 })
-export class QuestionComponent implements OnInit {
+export class QuestionComponent implements OnInit, OnDestroy {
 
   @Input()
   public question: Question;
@@ -32,10 +32,22 @@ export class QuestionComponent implements OnInit {
 
   constructor(private questionService: QuestionService) {
     this.subscription.add(this.questionService.currentQuestion$
-      .subscribe((currentQuestion: Question) => this.currentCorrectAnswer = currentQuestion.answer));
+      .subscribe((currentQuestion: Question) => {
+        // TODO: Double check if this is needed
+        if (currentQuestion) {
+          this.currentCorrectAnswer = currentQuestion.answer;
+        }
+      }));
   }
 
   ngOnInit(): void {
+    if (!this.question) {
+      this.question = new Question(0, '', '', '', false, ['']);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onCompleteQuestion() {

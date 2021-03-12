@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class QuizService {
+export class QuizService implements OnDestroy {
   public readonly quizInProgress$: Observable<boolean>;
   public readonly results$: Observable<number[]>;
 
@@ -36,5 +36,9 @@ export class QuizService {
 
   getResults(): Observable<number[]> {
     return this.results$$.asObservable();
+  }
+
+  ngOnDestroy(): void {
+    this.results$$.unsubscribe();
   }
 }

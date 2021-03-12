@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Question } from '../common/models/question';
 
 const Questions: Question[] = [
@@ -27,7 +28,7 @@ const Questions: Question[] = [
       "My Fourth Answer", 'answer2', "answer3", "answer4"
     ]
   },
-  { 
+  {
     "isAnswered": false, "id": 5, "content": "My Fifth Question", "answer": "My Fifth Answer", "category": "Arts",
     "possibleAnswers": [
       "answer1", 'My Fifth Answer', "answer3", "answer4"
@@ -40,11 +41,24 @@ const Questions: Question[] = [
 })
 export class QuestionService {
 
-  questions$: BehaviorSubject<Question[]> = new BehaviorSubject<Question[]>(Questions);
-  currentQuestion$: BehaviorSubject<Question> = new BehaviorSubject<Question>(null);
+  public isThisLastQuestion: boolean = false;
 
-  constructor() {
-    this.currentQuestion$.next(this.questions$.value[0]);
+  questions$$: BehaviorSubject<Question[]> = new BehaviorSubject<Question[]>(Questions);
+  currentQuestion$: BehaviorSubject<Question> = new BehaviorSubject<Question>(null);
+  isLastQUesion$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  private readonly subscription: Subscription = new Subscription();
+
+  constructor(private httpClient: HttpClient) {
+    // this.subscription.add(
+    //   this.httpClient.get("https://localhost:44334/api/Question")
+    //     .subscribe((questions: Question[]) => {
+    //       this.questions$$.next(questions)
+    //       this.currentQuestion$.next(this.questions$$.value[0]);
+    //       this.isLastQUesion$$.next(this.isThisLastQuestion = this.currentQuestion$.value.id === this.questions$$.value.length);
+    //     })
+    // );
+    this.currentQuestion$.next(this.questions$$.value[0]);
   }
 
   setCurrentQuestion(question: Question): void {
@@ -56,19 +70,28 @@ export class QuestionService {
   }
 
   getQuestions(): Observable<Question[]> {
-    return this.questions$.asObservable();
+    return this.questions$$.asObservable();
   }
 
   moveToNextQuestion(): void {
-    const index = this.currentQuestion$.value.id;
+    let index = this.questions$$.value.indexOf(this.currentQuestion$.value)
 
-    // TODO: Change index to use ID
-    if (index < this.questions$.value.length) {
-      this.currentQuestion$.next(this.questions$.value[index]);
+    if (index < this.questions$$.value.length) {
+      index += 1;
+      this.currentQuestion$.next(this.questions$$.value[index]);
+    } else {
     }
   }
 
   isLastQuestion(): boolean {
-    return this.currentQuestion$.value.id === this.questions$.value.length;
+      const questionIndex = this.questions$$.value.indexOf(this.currentQuestion$.value)
+
+      return questionIndex === this.questions$$.value.length - 1;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.questions$$.unsubscribe();
+    this.currentQuestion$.unsubscribe();
   }
 }
