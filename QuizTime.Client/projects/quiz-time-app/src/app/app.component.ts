@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { QuizService } from './services/quiz.service';
 
@@ -13,10 +14,13 @@ export class AppComponent {
   private readonly subscription: Subscription = new Subscription();
   public quizInProgress: boolean;
 
-  constructor(private quizService: QuizService) {
+  constructor(private quizService: QuizService,private router: Router) {
         this.subscription.add(this.quizService.isQuizInProgress()
           .subscribe((quizInProgress: boolean) => this.quizInProgress = quizInProgress));
    }
 
+   startNewQuiz() {
+    this.router.navigate(['/quiz']);
+   }
 
 }

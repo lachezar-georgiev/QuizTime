@@ -5,14 +5,17 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class QuizService implements OnDestroy {
-  public readonly results$: Observable<number[]>;
+
+  public readonly resultsTotal$: Observable<number[]>;
 
   private readonly quizInProgress$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private readonly results$$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  private readonly resultsTotal$$: BehaviorSubject<number[][]> = new BehaviorSubject<number[][]>([]);
   private results: number[] = [];
+  private resultsTotal: number[][] = [];
 
   constructor() {
-        this.results$ = this.results$$.asObservable();
+        this.resultsTotal$ = this.results$$.asObservable();
   }
 
   startQuiz(): void {
@@ -21,6 +24,12 @@ export class QuizService implements OnDestroy {
 
   finishQuiz(): void {
     this.quizInProgress$$.next(false);
+    if(this.results$$.value.length) {
+      this.resultsTotal.push(this.results$$.value);
+    }
+    this.results$$.next([]);
+    this.resultsTotal$$.next([...this.resultsTotal]);
+    this.results = [];
   }
 
   isQuizInProgress(): Observable<boolean> {
@@ -32,11 +41,14 @@ export class QuizService implements OnDestroy {
     this.results$$.next([...this.results]);
   }
 
-  getResults(): Observable<number[]> {
-    return this.results$$.asObservable();
+  getResults(): Observable<number[][]> {
+    return this.resultsTotal$$.asObservable();
   }
 
-  ngOnDestroy(): void {
-    this.results$$.unsubscribe();
+  ngOnDestroy():void {
+    this.quizInProgress$$.complete();
+    this.results$$.complete();
+    this.resultsTotal$$.complete();
   }
+
 }

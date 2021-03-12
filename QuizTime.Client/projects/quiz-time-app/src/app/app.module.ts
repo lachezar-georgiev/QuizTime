@@ -10,6 +10,7 @@ import { QuizComponent } from './components/quiz/quiz.component';
 import { HomeComponent } from './components/home/home.component';
 import { QuestionComponent } from './components/question/question.component';
 import { ResultComponent } from './components/result/result.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ResultComponent } from './components/result/result.component';
     QuizComponent,
     HomeComponent,
     QuestionComponent,
-    ResultComponent
+    ResultComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,9 @@
+<div *ngIf="pieCharts.length; else noresults">
+    <div *ngFor="let pieChart of pieCharts; let i = index">
+        <app-result [result]="pieChart" [quizNumber]="i + 1"></app-result>
+    </div>
+</div>
+
+<ng-template #noresults>
+    <h3>No results yet, please complete a quiz first!</h3>
+</ng-template>

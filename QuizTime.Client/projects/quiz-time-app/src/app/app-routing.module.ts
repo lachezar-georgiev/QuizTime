@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { QuizComponent } from './components/quiz/quiz.component';
-import { ResultComponent } from './components/result/result.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 const routes: Routes = [
   { path: 'quiz', component: QuizComponent },
-  { path: 'results', component: ResultComponent },
+  { path: 'statistics', component: StatisticsComponent },
   { path: '**', component: HomeComponent },
   { path: '', component: HomeComponent }
 ];

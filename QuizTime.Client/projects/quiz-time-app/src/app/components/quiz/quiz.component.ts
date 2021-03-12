@@ -28,21 +28,15 @@ export class QuizComponent implements OnInit, OnDestroy {
 
       if(!this.quizInProgress) {
         this.quizService.startQuiz();
-      } else if (this.isGameOver) {
-        // TODO: Add popup for game over!
+        this.questionService.getQuestions();
       }
+      // else if (this.isGameOver) {
+      //   // TODO: Add popup for game over!
+      // }
       else {
         this.isModalVisible = true;
       }
     }
-
-  ngOnInit(): void {
-    this.currentQuestion$ = this.questionService.getCurrentQuestion();
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
 
   onNextQuestion(){
     if (!this.questionService.isLastQuestion()) {
@@ -59,7 +53,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   finishQuiz(): void {
     this.quizService.finishQuiz();
     this.questionService.disposeOfQuestions();
-    this.router.navigate(['/results']);
+    this.router.navigate(['/statistics']);
   }
 
   getFreshQuestions() {
@@ -73,10 +67,19 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.quizService.finishQuiz();
       this.questionService.disposeOfQuestions();
       this.getFreshQuestions();
+      this.router.navigate(['/quiz']);
     }
   }
 
   addQuestionResult(questionResult: number) {
     this.quizService.addResult(questionResult);
+  }
+
+  ngOnInit(): void {
+    this.currentQuestion$ = this.questionService.getCurrentQuestion();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

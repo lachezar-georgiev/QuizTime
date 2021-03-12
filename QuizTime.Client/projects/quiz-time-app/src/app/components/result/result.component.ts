@@ -1,40 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { QuizService } from '../../services/quiz.service';
+import { Component, Input } from '@angular/core';
+import { Result } from './models/result';
 
 @Component({
   selector: 'app-result',
-  templateUrl: './result.component.html',
-  styleUrls: ['./result.component.scss']
+  templateUrl: './result.component.html'
 })
-export class ResultComponent implements OnInit {
+export class ResultComponent {
 
-  public pieChartLabels = ['Correct', 'Wrong'];
-  public pieChartData = [];
-  public pieChartType = 'pie';
-  public colors = [{
-    "backgroundColor" : ['rgba(54, 136, 231, 0.5)', 'rgba(233, 51, 70, 0.5)']
-  }];
+  @Input()
+  public result: Result = new Result([], [], '', [])
 
-  private readonly subscription: Subscription = new Subscription();
-
-  constructor(private quizService: QuizService) {
-    this.subscription.add(this.quizService.getResults()
-    .subscribe((results: number[]) => {
-        if(results.length) {
-          const correctAnswers: number[] = results.filter((value: number) => value > 0 );
-          const wrongAnswers: number[] = results.filter((value: number) => value <= 0 );
-          this.pieChartData = [correctAnswers.length, wrongAnswers.length]
-        }
-    }));
-   }
-
-  ngOnInit(): void {
-
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+  @Input()
+  public quizNumber: number;
 
 }

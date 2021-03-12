@@ -74,7 +74,6 @@ export class QuestionService implements OnDestroy {
   }
 
   getQuestions(): Observable<Question[]> {
-    console.log('skip value: ', this.skip);
     if (this.skip > 0) {
       this.httpClient.get(`https://localhost:44334/api/Question?skip=${this.skip}`)
         .subscribe((questions: Question[]) => {

@@ -1,12 +1,12 @@
 <header>
     <h1>It's Quiz Time!</h1>
 </header>
-
+quiz in progress: {{ quizInProgress }}
 <nav class="flex-container">
     <a href="#" class="flex-item" routerLink="/">Home</a>
-    <a href="#" class="flex-item" routerLink="/results">Results</a>
-    <a href="#" class="flex-item" routerLink="/quiz">New Quiz</a>
-    <a href="#" class="flex-item">About</a>
+    <a href="#" class="flex-item" routerLink="/statistics">Results</a>
+    <button href="#" class="flex-item" (click)=startNewQuiz()>New Quiz</button>
+    <a href="#" class="flex-item" routerLink="/">About</a>
 </nav>
 
 <router-outlet></router-outlet>
