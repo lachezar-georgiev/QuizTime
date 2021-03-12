@@ -41,36 +41,33 @@ const Questions: Question[] = [
 })
 export class QuestionService implements OnDestroy {
 
-  public readonly areAllQuestionsAnswered$: Observable<boolean>;
-
-  questions$$: BehaviorSubject<Question[]> = new BehaviorSubject<Question[]>(Questions);
-  currentQuestion$: BehaviorSubject<Question> = new BehaviorSubject<Question>(null);
-
-  
+  private readonly questions$$: BehaviorSubject<Question[]> = new BehaviorSubject<Question[]>(Questions);
+  private readonly currentQuestion$$: BehaviorSubject<Question> = new BehaviorSubject<Question>(null);
   private readonly areAllQuestionsAnswered$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
   private readonly subscription: Subscription = new Subscription();
   private readonly skipIncrementValue: number = 5;
   private skip: number = 0;
 
+  public readonly areAllQuestionsAnswered$: Observable<boolean>;
+
   constructor(private httpClient: HttpClient) {
     // this.subscription.add(
-    //   this.httpClient.get("https://localhost:44334/api/Question")
-    //     .subscribe((questions: Question[]) => {
-    //       this.questions$$.next(questions)
-    //       this.currentQuestion$.next(this.questions$$.value[0]);
-    //     })
-    // );
-      this.currentQuestion$.next(this.questions$$.value[0]);
+    //     this.httpClient.get("https://localhost:44334/api/Question")
+    //       .subscribe((questions: Question[]) => {
+    //         this.questions$$.next(questions)
+    //         this.currentQuestion$$.next(this.questions$$.value[0]);
+    //       })
+    //   );
+      this.currentQuestion$$.next(this.questions$$.value[0]);
       this.areAllQuestionsAnswered$ = this.areAllQuestionsAnswered$$.asObservable();
   }
 
   setCurrentQuestion(question: Question): void {
-    this.currentQuestion$.next(question);
+    this.currentQuestion$$.next(question);
   }
 
   getCurrentQuestion(): Observable<Question> {
-    return this.currentQuestion$.asObservable();
+    return this.currentQuestion$$.asObservable();
   }
 
   getQuestions(): Observable<Question[]> {
@@ -79,7 +76,7 @@ export class QuestionService implements OnDestroy {
         .subscribe((questions: Question[]) => {
           if (questions.length) {
             this.questions$$.next(questions);
-            this.currentQuestion$.next(this.questions$$.value[0]);
+            this.currentQuestion$$.next(this.questions$$.value[0]);
           } else {
             this.areAllQuestionsAnswered$$.next(true);
           }
@@ -89,17 +86,17 @@ export class QuestionService implements OnDestroy {
   }
 
   moveToNextQuestion(): void {
-    let index = this.questions$$.value.indexOf(this.currentQuestion$.value)
+    let index = this.questions$$.value.indexOf(this.currentQuestion$$.value)
 
     if (index < this.questions$$.value.length) {
       index += 1;
-      this.currentQuestion$.next(this.questions$$.value[index]);
-    } else {
+      this.currentQuestion$$.next(this.questions$$.value[index]);
+
     }
   }
 
   isLastQuestion(): boolean {
-      const questionIndex = this.questions$$.value.indexOf(this.currentQuestion$.value)
+      const questionIndex = this.questions$$.value.indexOf(this.currentQuestion$$.value)
 
       return questionIndex === this.questions$$.value.length - 1;
   }
@@ -112,6 +109,6 @@ export class QuestionService implements OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     this.questions$$.unsubscribe();
-    this.currentQuestion$.unsubscribe();
+    this.currentQuestion$$.unsubscribe();
   }
 }

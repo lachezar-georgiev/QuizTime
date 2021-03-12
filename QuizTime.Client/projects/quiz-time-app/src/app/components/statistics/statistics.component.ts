@@ -15,7 +15,6 @@ export class StatisticsComponent implements OnDestroy {
   private readonly pieChartColors: { backgroundColor: string[]; }[] = [{
     "backgroundColor" : ['rgba(54, 136, 231, 0.5)', 'rgba(233, 51, 70, 0.5)']
   }];
-
   private readonly subscription: Subscription = new Subscription();
 
   public pieCharts: Result[] = [];

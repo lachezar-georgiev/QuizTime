@@ -11,12 +11,12 @@ import { QuizService } from '../../services/quiz.service';
   styleUrls: ['./quiz.component.scss']
 })
 export class QuizComponent implements OnInit, OnDestroy {
+  private readonly subscription: Subscription = new Subscription();
+
   public currentQuestion$: Observable<Question>;
   public quizInProgress: boolean;
   public isGameOver: boolean;
   public isModalVisible: boolean;
-
-  private readonly subscription: Subscription = new Subscription();
 
   constructor(
     private questionService: QuestionService,

@@ -10,44 +10,31 @@ import { QuestionService } from '../../services/question.service';
 })
 export class QuestionComponent implements OnInit, OnDestroy {
 
+  private subscription: Subscription = new Subscription();
+
   @Input()
   public question: Question;
 
   @Input()
   public questionScore: boolean;
 
-  public isRadioButtonChecked: boolean = false;
-
-  private subscription: Subscription = new Subscription();
-
   @Output()
   public questionResultChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  public isRadioButtonChecked: boolean = false;
   public currentSelectedAnswer: string;
   public currentCorrectAnswer: string;
-
   public isModalVisible: boolean = false;
-
   public questionIds: string[] = ['A', 'B', 'C', 'D'];
 
   constructor(private questionService: QuestionService) {
-    this.subscription.add(this.questionService.currentQuestion$
+    this.subscription.add(this.questionService.getCurrentQuestion()
       .subscribe((currentQuestion: Question) => {
         // TODO: Double check if this is needed
         if (currentQuestion) {
           this.currentCorrectAnswer = currentQuestion.answer;
         }
       }));
-  }
-
-  ngOnInit(): void {
-    if (!this.question) {
-      this.question = new Question(0, '', '', '', false, ['']);
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   onCompleteQuestion() {
@@ -82,6 +69,16 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
   onQuestionResultChanged(questionResult: boolean) {
     this.questionResultChanged.emit(questionResult);
+  }
+
+  ngOnInit(): void {
+    if (!this.question) {
+      this.question = new Question(0, '', '', '', false, ['']);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }
