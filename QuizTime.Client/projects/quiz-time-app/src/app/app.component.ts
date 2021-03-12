@@ -14,7 +14,7 @@ export class AppComponent {
   public quizInProgress: boolean;
 
   constructor(private quizService: QuizService) {
-        this.subscription.add(this.quizService.quizInProgress$
+        this.subscription.add(this.quizService.isQuizInProgress()
           .subscribe((quizInProgress: boolean) => this.quizInProgress = quizInProgress));
    }
 

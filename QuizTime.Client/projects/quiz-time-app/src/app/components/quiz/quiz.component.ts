@@ -13,6 +13,7 @@ import { QuizService } from '../../services/quiz.service';
 export class QuizComponent implements OnInit, OnDestroy {
   public currentQuestion$: Observable<Question>;
   public quizInProgress: boolean;
+  public isGameOver: boolean;
   public isModalVisible: boolean;
 
   private readonly subscription: Subscription = new Subscription();
@@ -21,13 +22,16 @@ export class QuizComponent implements OnInit, OnDestroy {
     private questionService: QuestionService,
     private quizService: QuizService,
     private router: Router) { 
-      this.subscription.add(this.quizService.quizInProgress$
-          .subscribe((quizInProgress: boolean) => this.quizInProgress = quizInProgress));
+      this.subscription.add(this.quizService.isQuizInProgress().subscribe((quizInProgress: boolean) => this.quizInProgress = quizInProgress));
+      this.subscription.add(this.questionService.areAllQuestionsAnswered$.subscribe((areAllQuestionsAnswered: boolean) => this.isGameOver = areAllQuestionsAnswered));
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
       if(!this.quizInProgress) {
         this.quizService.startQuiz();
-      } else {
+      } else if (this.isGameOver) {
+        // TODO: Add popup for game over!
+      }
+      else {
         this.isModalVisible = true;
       }
     }
@@ -48,17 +52,28 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
-  showButtonLabel() {
+  showButtonLabel(): string {
     return !this.questionService.isLastQuestion() ? 'Next Question' : 'Finish';
   }
 
   finishQuiz(): void {
     this.quizService.finishQuiz();
+    this.questionService.disposeOfQuestions();
     this.router.navigate(['/results']);
   }
 
-  toggleModal() {
+  getFreshQuestions() {
+    this.questionService.getQuestions();
+  }
+
+  toggleModal(startNewQuiz: boolean) {
     this.isModalVisible = !this.isModalVisible;
+
+    if(startNewQuiz) {
+      this.quizService.finishQuiz();
+      this.questionService.disposeOfQuestions();
+      this.getFreshQuestions();
+    }
   }
 
   addQuestionResult(questionResult: number) {

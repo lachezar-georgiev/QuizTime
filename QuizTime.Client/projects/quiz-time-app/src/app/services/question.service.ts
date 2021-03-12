@@ -39,15 +39,19 @@ const Questions: Question[] = [
 @Injectable({
   providedIn: 'root'
 })
-export class QuestionService {
+export class QuestionService implements OnDestroy {
 
-  public isThisLastQuestion: boolean = false;
+  public readonly areAllQuestionsAnswered$: Observable<boolean>;
 
   questions$$: BehaviorSubject<Question[]> = new BehaviorSubject<Question[]>(Questions);
   currentQuestion$: BehaviorSubject<Question> = new BehaviorSubject<Question>(null);
-  isLastQUesion$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  
+  private readonly areAllQuestionsAnswered$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private readonly subscription: Subscription = new Subscription();
+  private readonly skipIncrementValue: number = 5;
+  private skip: number = 0;
 
   constructor(private httpClient: HttpClient) {
     // this.subscription.add(
@@ -55,10 +59,10 @@ export class QuestionService {
     //     .subscribe((questions: Question[]) => {
     //       this.questions$$.next(questions)
     //       this.currentQuestion$.next(this.questions$$.value[0]);
-    //       this.isLastQUesion$$.next(this.isThisLastQuestion = this.currentQuestion$.value.id === this.questions$$.value.length);
     //     })
     // );
-    this.currentQuestion$.next(this.questions$$.value[0]);
+      this.currentQuestion$.next(this.questions$$.value[0]);
+      this.areAllQuestionsAnswered$ = this.areAllQuestionsAnswered$$.asObservable();
   }
 
   setCurrentQuestion(question: Question): void {
@@ -70,6 +74,18 @@ export class QuestionService {
   }
 
   getQuestions(): Observable<Question[]> {
+    console.log('skip value: ', this.skip);
+    if (this.skip > 0) {
+      this.httpClient.get(`https://localhost:44334/api/Question?skip=${this.skip}`)
+        .subscribe((questions: Question[]) => {
+          if (questions.length) {
+            this.questions$$.next(questions);
+            this.currentQuestion$.next(this.questions$$.value[0]);
+          } else {
+            this.areAllQuestionsAnswered$$.next(true);
+          }
+        });
+    }
     return this.questions$$.asObservable();
   }
 
@@ -87,6 +103,11 @@ export class QuestionService {
       const questionIndex = this.questions$$.value.indexOf(this.currentQuestion$.value)
 
       return questionIndex === this.questions$$.value.length - 1;
+  }
+
+  disposeOfQuestions() {
+    this.questions$$.next([]);
+    this.skip += this.skipIncrementValue;
   }
 
   ngOnDestroy(): void {

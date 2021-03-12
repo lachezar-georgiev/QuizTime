@@ -5,7 +5,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class QuizService implements OnDestroy {
-  public readonly quizInProgress$: Observable<boolean>;
   public readonly results$: Observable<number[]>;
 
   private readonly quizInProgress$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -13,7 +12,6 @@ export class QuizService implements OnDestroy {
   private results: number[] = [];
 
   constructor() {
-        this.quizInProgress$ = this.quizInProgress$$.asObservable();
         this.results$ = this.results$$.asObservable();
   }
 
@@ -26,7 +24,7 @@ export class QuizService implements OnDestroy {
   }
 
   isQuizInProgress(): Observable<boolean> {
-    return this.quizInProgress$;
+    return this.quizInProgress$$.asObservable();
   }
 
   addResult(result: number): void {
