@@ -14,7 +14,6 @@ export class QuizService implements OnDestroy {
   private readonly resultsByCategory$$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   private results: number[] = [];
   private resultsTotal: number[][] = [];
-  public endResult = { data: [28, 48, 40, 19, 86, 27, 90], label: 'Wrong' };
   private correctResultsByCategory = {
     animals: 0,
     art: 0,

@@ -30,13 +30,13 @@ export class QuestionService implements OnDestroy {
   public readonly areAllQuestionsAnswered$: Observable<boolean>;
 
   constructor(private httpClient: HttpClient) {
-    // this.subscription.add(
-    //   this.httpClient.get('https://localhost:44334/api/Question')
-    //     .subscribe((questions: Question[]) => {
-    //       this.questions$$.next(questions);
-    //       this.currentQuestion$$.next(this.questions$$.value[0]);
-    //     })
-    // );
+    this.subscription.add(
+      this.httpClient.get('https://localhost:44334/api/Question')
+        .subscribe((questions: Question[]) => {
+          this.questions$$.next(questions);
+          this.currentQuestion$$.next(this.questions$$.value[0]);
+        })
+    );
     this.areAllQuestionsAnswered$ = this.areAllQuestionsAnswered$$.asObservable();
   }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace QuizTime.Api.Data
+namespace QuizTime.Api.Models
 {
-    public class Question
+    public class QuestionModel
     {
         public Guid Id { get; set; }
 
@@ -13,6 +13,5 @@ namespace QuizTime.Api.Data
         public string[] PossibleAnswers { get; set; }
 
         public string Category { get; set; }
-
     }
 }
