@@ -36,6 +36,11 @@ namespace QuizTime.Api
                   builder =>
                   {
                       builder.WithOrigins("http://localhost:4200");
+                      builder.WithOrigins("http://localhost:6000");
+                      builder.WithOrigins("http://localhost:6000");
+                      builder.WithOrigins("https://localhost:6001");
+                      builder.WithOrigins("https://localhost:7001");
+                      builder.WithOrigins("https://localhost:44340");
                   });
             });
 
