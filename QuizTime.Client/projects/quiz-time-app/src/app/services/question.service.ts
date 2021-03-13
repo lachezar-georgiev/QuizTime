@@ -5,42 +5,18 @@ import { Question } from '../common/models/question';
 
 const Questions: Question[] = [
   {
-    "isAnswered": false, "id": 1, "content": "My First Question", "answer": "My First Answer", "category": "Arts",
-    "possibleAnswers": [
-      "answer1", 'answer2', "answer3", "My First Answer"
-    ]
-  },
-  {
-    "isAnswered": false, "id": 2, "content": "My Second Question", "answer": "My Second Answer", "category": "Arts",
-    "possibleAnswers": [
-      "answer1", 'answer2', "My Second Answer", "answer4"
-    ]
-  },
-  {
-    "isAnswered": false, "id": 3, "content": "My Third Question", "answer": "My Third Answer", "category": "Arts",
-    "possibleAnswers": [
-      "answer1", 'answer2', "My Third Answer", "answer4"
-    ]
-  },
-  {
-    "isAnswered": false, "id": 4, "content": "My Fourth Question", "answer": "My Fourth Answer", "category": "Arts",
-    "possibleAnswers": [
-      "My Fourth Answer", 'answer2', "answer3", "answer4"
-    ]
-  },
-  {
-    "isAnswered": false, "id": 5, "content": "My Fifth Question", "answer": "My Fifth Answer", "category": "Arts",
-    "possibleAnswers": [
-      "answer1", 'My Fifth Answer', "answer3", "answer4"
+    isAnswered: false, id: 1, content: 'My First Question', answer: 'My First Answer', category: 'Arts',
+    possibleAnswers: [
+      'answer1', 'answer2', 'answer3', 'My First Answer'
     ]
   }
-]
+];
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService implements OnDestroy {
-  
+
   private readonly secondsPerQestion: number = 10;
   private readonly questions$$: BehaviorSubject<Question[]> = new BehaviorSubject<Question[]>(Questions);
   private readonly currentQuestion$$: BehaviorSubject<Question> = new BehaviorSubject<Question>(null);
@@ -48,20 +24,19 @@ export class QuestionService implements OnDestroy {
   private readonly questionTimeLeft$$: BehaviorSubject<number> = new BehaviorSubject<number>(this.secondsPerQestion);
   private readonly subscription: Subscription = new Subscription();
   private readonly skipIncrementValue: number = 5;
-  private skip: number = 0;
+  private skip = 0;
   private interval;
 
   public readonly areAllQuestionsAnswered$: Observable<boolean>;
 
   constructor(private httpClient: HttpClient) {
     // this.subscription.add(
-    //     this.httpClient.get("https://localhost:44334/api/Question")
-    //       .subscribe((questions: Question[]) => {
-    //         this.questions$$.next(questions)
-    //         this.currentQuestion$$.next(this.questions$$.value[0]);
-    //       })
-    //   );
-     this.currentQuestion$$.next(this.questions$$.value[0]);
+    //   this.httpClient.get('https://localhost:44334/api/Question')
+    //     .subscribe((questions: Question[]) => {
+    //       this.questions$$.next(questions);
+    //       this.currentQuestion$$.next(this.questions$$.value[0]);
+    //     })
+    // );
     this.areAllQuestionsAnswered$ = this.areAllQuestionsAnswered$$.asObservable();
   }
 
@@ -94,7 +69,7 @@ export class QuestionService implements OnDestroy {
   }
 
   moveToNextQuestion(): void {
-    let index = this.questions$$.value.indexOf(this.currentQuestion$$.value)
+    let index = this.questions$$.value.indexOf(this.currentQuestion$$.value);
 
     if (index < this.questions$$.value.length) {
       index += 1;
@@ -104,17 +79,17 @@ export class QuestionService implements OnDestroy {
   }
 
   isLastQuestion(): boolean {
-    const questionIndex = this.questions$$.value.indexOf(this.currentQuestion$$.value)
+    const questionIndex = this.questions$$.value.indexOf(this.currentQuestion$$.value);
 
     return questionIndex === this.questions$$.value.length - 1;
   }
 
-  disposeOfQuestions() {
+  disposeOfQuestions(): void {
     this.questions$$.next([]);
     this.skip += this.skipIncrementValue;
   }
 
-  startQuestionTimer() {
+  startQuestionTimer(): void {
     // the interval must be cleared on each call because
     // this method is called from multiple places
     clearInterval(this.interval);
@@ -124,12 +99,12 @@ export class QuestionService implements OnDestroy {
         currentValue--;
         this.questionTimeLeft$$.next(currentValue);
       } else {
-          clearInterval(this.interval);
-          this.currentQuestion$$.value.isAnswered = true;
-          this.questionTimeLeft$$.next(this.secondsPerQestion);
+        clearInterval(this.interval);
+        this.currentQuestion$$.value.isAnswered = true;
+        this.questionTimeLeft$$.next(this.secondsPerQestion);
       }
     }, 1000);
-}
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

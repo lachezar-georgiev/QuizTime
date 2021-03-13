@@ -19,7 +19,7 @@ export class AppComponent {
           .subscribe((quizInProgress: boolean) => this.quizInProgress = quizInProgress));
    }
 
-   startNewQuiz() {
+   startNewQuiz(): void {
     this.router.navigate(['/quiz']);
    }
 

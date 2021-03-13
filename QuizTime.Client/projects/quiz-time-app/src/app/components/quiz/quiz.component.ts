@@ -42,9 +42,9 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.quizService.startQuiz();
         this.questionService.getQuestions();
       }
-      // else if (this.isGameOver) {
-      //   // TODO: Add popup for game over!
-      // }
+      else if (this.isGameOver) {
+        // TODO: show conrats message
+      }
       else {
         this.isModalVisible = true;
       }
