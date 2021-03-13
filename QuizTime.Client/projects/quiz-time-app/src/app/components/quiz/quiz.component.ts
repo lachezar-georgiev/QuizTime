@@ -17,16 +17,28 @@ export class QuizComponent implements OnInit, OnDestroy {
   public quizInProgress: boolean;
   public isGameOver: boolean;
   public isModalVisible: boolean;
+  public questionCategory: string;
 
   constructor(
     private questionService: QuestionService,
     private quizService: QuizService,
-    private router: Router) { 
-      this.subscription.add(this.quizService.isQuizInProgress().subscribe((quizInProgress: boolean) => this.quizInProgress = quizInProgress));
-      this.subscription.add(this.questionService.areAllQuestionsAnswered$.subscribe((areAllQuestionsAnswered: boolean) => this.isGameOver = areAllQuestionsAnswered));
+    private router: Router) {
+      this.subscription.add(this.quizService.isQuizInProgress()
+        .subscribe((quizInProgress: boolean) => this.quizInProgress = quizInProgress));
+
+      this.subscription.add(this.questionService.areAllQuestionsAnswered$
+        .subscribe((areAllQuestionsAnswered: boolean) => this.isGameOver = areAllQuestionsAnswered));
+
+      this.subscription.add(this.questionService.getCurrentQuestion()
+        .subscribe((question: Question) => {
+          if (question) {
+            this.questionCategory = question.category;
+          }
+        }));
+
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
-      if(!this.quizInProgress) {
+      if (!this.quizInProgress) {
         this.quizService.startQuiz();
         this.questionService.getQuestions();
       }
@@ -36,9 +48,9 @@ export class QuizComponent implements OnInit, OnDestroy {
       else {
         this.isModalVisible = true;
       }
-    }
+  }
 
-  onNextQuestion(){
+  onNextQuestion() {
     if (!this.questionService.isLastQuestion()) {
       this.questionService.moveToNextQuestion();
     } else {
@@ -63,7 +75,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   toggleModal(startNewQuiz: boolean) {
     this.isModalVisible = !this.isModalVisible;
 
-    if(startNewQuiz) {
+    if (startNewQuiz) {
       this.quizService.finishQuiz();
       this.questionService.disposeOfQuestions();
       this.getFreshQuestions();
@@ -72,7 +84,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   addQuestionResult(questionResult: number) {
-    this.quizService.addResult(questionResult);
+    this.quizService.addResult(questionResult, this.questionCategory);
   }
 
   ngOnInit(): void {

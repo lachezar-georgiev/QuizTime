@@ -61,7 +61,7 @@ export class QuestionService implements OnDestroy {
     //         this.currentQuestion$$.next(this.questions$$.value[0]);
     //       })
     //   );
-    this.currentQuestion$$.next(this.questions$$.value[0]);
+     this.currentQuestion$$.next(this.questions$$.value[0]);
     this.areAllQuestionsAnswered$ = this.areAllQuestionsAnswered$$.asObservable();
   }
 
@@ -123,7 +123,6 @@ export class QuestionService implements OnDestroy {
         let currentValue: number = this.questionTimeLeft$$.value;
         currentValue--;
         this.questionTimeLeft$$.next(currentValue);
-        console.log('time left: ', this.questionTimeLeft$$.value);
       } else {
           clearInterval(this.interval);
           this.currentQuestion$$.value.isAnswered = true;

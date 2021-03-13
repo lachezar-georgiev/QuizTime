@@ -1,9 +1,23 @@
-<div *ngIf="pieCharts.length; else noresults">
-    <div *ngFor="let pieChart of pieCharts; let i = index">
-        <app-result [result]="pieChart" [quizNumber]="i + 1"></app-result>
+<div *ngIf="quizResults.length; else noresults">
+    <div *ngFor="let quizResult of quizResults; let i = index">
+        <app-result [result]="quizResult" [quizNumber]="i + 1"></app-result>
+    </div>
+
+    <h3>Results by Question Category</h3>
+    <div>
+        <div style="display: block">
+        <canvas baseChart
+                [datasets]="resultsByCategoryDatasets"
+                [labels]="quizCategoryLabels"
+                [options]="categoryResultsChartOptions"
+                [legend]="quizResultsLegend"
+                [chartType]="quizCategoryResultsChartType">
+        </canvas>
+        </div>
     </div>
 </div>
 
 <ng-template #noresults>
     <h3>No results yet, please complete a quiz first!</h3>
 </ng-template>
+
