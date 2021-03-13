@@ -40,13 +40,16 @@ const Questions: Question[] = [
   providedIn: 'root'
 })
 export class QuestionService implements OnDestroy {
-
+  
+  private readonly secondsPerQestion: number = 10;
   private readonly questions$$: BehaviorSubject<Question[]> = new BehaviorSubject<Question[]>(Questions);
   private readonly currentQuestion$$: BehaviorSubject<Question> = new BehaviorSubject<Question>(null);
   private readonly areAllQuestionsAnswered$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private readonly questionTimeLeft$$: BehaviorSubject<number> = new BehaviorSubject<number>(this.secondsPerQestion);
   private readonly subscription: Subscription = new Subscription();
   private readonly skipIncrementValue: number = 5;
   private skip: number = 0;
+  private interval;
 
   public readonly areAllQuestionsAnswered$: Observable<boolean>;
 
@@ -58,8 +61,8 @@ export class QuestionService implements OnDestroy {
     //         this.currentQuestion$$.next(this.questions$$.value[0]);
     //       })
     //   );
-      this.currentQuestion$$.next(this.questions$$.value[0]);
-      this.areAllQuestionsAnswered$ = this.areAllQuestionsAnswered$$.asObservable();
+    this.currentQuestion$$.next(this.questions$$.value[0]);
+    this.areAllQuestionsAnswered$ = this.areAllQuestionsAnswered$$.asObservable();
   }
 
   setCurrentQuestion(question: Question): void {
@@ -67,6 +70,7 @@ export class QuestionService implements OnDestroy {
   }
 
   getCurrentQuestion(): Observable<Question> {
+    this.startQuestionTimer();
     return this.currentQuestion$$.asObservable();
   }
 
@@ -85,26 +89,48 @@ export class QuestionService implements OnDestroy {
     return this.questions$$.asObservable();
   }
 
+  getCurrentQuestionTImer(): Observable<number> {
+    return this.questionTimeLeft$$.asObservable();
+  }
+
   moveToNextQuestion(): void {
     let index = this.questions$$.value.indexOf(this.currentQuestion$$.value)
 
     if (index < this.questions$$.value.length) {
       index += 1;
       this.currentQuestion$$.next(this.questions$$.value[index]);
-
     }
+    this.startQuestionTimer();
   }
 
   isLastQuestion(): boolean {
-      const questionIndex = this.questions$$.value.indexOf(this.currentQuestion$$.value)
+    const questionIndex = this.questions$$.value.indexOf(this.currentQuestion$$.value)
 
-      return questionIndex === this.questions$$.value.length - 1;
+    return questionIndex === this.questions$$.value.length - 1;
   }
 
   disposeOfQuestions() {
     this.questions$$.next([]);
     this.skip += this.skipIncrementValue;
   }
+
+  startQuestionTimer() {
+    // the interval must be cleared on each call because
+    // this method is called from multiple places
+    clearInterval(this.interval);
+    this.interval = setInterval(() => {
+      if (!this.currentQuestion$$.value.isAnswered && this.questionTimeLeft$$.value > 0) {
+        let currentValue: number = this.questionTimeLeft$$.value;
+        currentValue--;
+        this.questionTimeLeft$$.next(currentValue);
+        console.log('time left: ', this.questionTimeLeft$$.value);
+      } else {
+          clearInterval(this.interval);
+          this.currentQuestion$$.value.isAnswered = true;
+          this.questionTimeLeft$$.next(this.secondsPerQestion);
+      }
+    }, 1000);
+}
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

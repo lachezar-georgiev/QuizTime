@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { Question } from '../../common/models/question';
 import { QuestionService } from '../../services/question.service';
@@ -6,7 +7,15 @@ import { QuestionService } from '../../services/question.service';
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss']
+  styleUrls: ['./question.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void <=> *', animate(1500)),
+    ])
+  ]
 })
 export class QuestionComponent implements OnInit, OnDestroy {
 
@@ -26,6 +35,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
   public currentCorrectAnswer: string;
   public isModalVisible: boolean = false;
   public questionIds: string[] = ['A', 'B', 'C', 'D'];
+  public questionTimer: number;
+
 
   constructor(private questionService: QuestionService) {
     this.subscription.add(this.questionService.getCurrentQuestion()
@@ -33,6 +44,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
         // TODO: Double check if this is needed
         if (currentQuestion) {
           this.currentCorrectAnswer = currentQuestion.answer;
+        }
+      }));
+    this.subscription.add(this.questionService.getCurrentQuestionTImer()
+      .subscribe((questionTimer: number) => {
+        this.questionTimer = questionTimer;
+        if (questionTimer === 0 && !this.question.isAnswered) {
+          this.markQuestionAsWrong();
         }
       }));
   }
@@ -69,6 +87,14 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
   onQuestionResultChanged(questionResult: boolean) {
     this.questionResultChanged.emit(questionResult);
+  }
+
+  markQuestionAsWrong(): void {
+    this.onQuestionResultChanged(false);
+    this.currentSelectedAnswer = null;
+    if (this.isModalVisible) {
+      this.isModalVisible = false;
+    }
   }
 
   ngOnInit(): void {
