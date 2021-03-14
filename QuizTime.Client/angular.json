@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["chart.js"],
             "outputPath": "dist/QuizTimeClient",
             "index": "projects/quiz-time-app/src/index.html",
             "main": "projects/quiz-time-app/src/main.ts",
