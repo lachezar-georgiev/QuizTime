@@ -27,6 +27,10 @@
         background: tomato;
         transition: 0.5s;
     }
+    &.clickable {
+        cursor: pointer;
+        outline: none;
+    }
 }
 
 h1 {

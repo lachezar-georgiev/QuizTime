@@ -4,6 +4,7 @@ import { Question } from '../../common/models/question';
 import { QuestionService } from '../../services/question.service';
 import { Router } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
+import * as confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-quiz',
@@ -26,7 +27,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.subscription.add(this.quizService.isQuizInProgress()
         .subscribe((quizInProgress: boolean) => this.quizInProgress = quizInProgress));
 
-      this.subscription.add(this.questionService.areAllQuestionsAnswered$
+      this.subscription.add(this.questionService.areAllQuestionsAnswered()
         .subscribe((areAllQuestionsAnswered: boolean) => this.isGameOver = areAllQuestionsAnswered));
 
       this.subscription.add(this.questionService.getCurrentQuestion()
@@ -42,9 +43,9 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.quizService.startQuiz();
         this.questionService.getQuestions();
       }
-      else if (this.isGameOver) {
-        // TODO: show conrats message
-      }
+      // else if (this.isGameOver) {
+      //   // TODO: show conrats message
+      // }
       else {
         this.isModalVisible = true;
       }
@@ -85,6 +86,22 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   addQuestionResult(questionResult: number) {
     this.quizService.addResult(questionResult, this.questionCategory);
+  }
+
+  viewResults(): void {
+    this.router.navigate(['/statistics']);
+  }
+
+  showConfetti(): void {
+    confetti.create()({
+      shapes: ['square'],
+      particleCount: 300,
+      spread: 120,
+      origin: {
+          y: (3),
+          x: (0.5)
+      }
+  });
   }
 
   ngOnInit(): void {

@@ -60,7 +60,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       this.isModalVisible = !this.isModalVisible;
     }
 
-    if (this.currentSelectedAnswer === this.currentCorrectAnswer) {
+    if (this.currentSelectedAnswer.toLowerCase() === this.currentCorrectAnswer.toLowerCase()) {
       this.onQuestionResultChanged(true);
     } else {
       this.onQuestionResultChanged(false)

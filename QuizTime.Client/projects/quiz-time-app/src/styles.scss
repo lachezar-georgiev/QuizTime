@@ -9,53 +9,43 @@ body {
     display: block
 }
 
-.primary {
-    border-radius: 10px;
-    background: #5ce500;
-    color: white;
-    line-height: 2em;
-    border: 1px solid #dddddd;
-    font-weight: bold;
-    font-size: 1.5em;
-    cursor: pointer;
 
-    &:hover{
-        background: tomato;
-        border: none;
-    }
-}
-
-.secondary {
+.action-button {
     border-radius: 10px;
-    background: #5ce500;
     color: white;
     line-height: 2em;
     border: 1px solid #dddddd;
     font-weight: bold;
     font-size: 1em;
-    cursor: pointer;
-    margin-top: 15px;
-    &:hover{
-        background: tomato;
-        border: none;
-    }
-}
-
-.tertiary {
-    border-radius: 10px;
-    background: #e79315;
-    color: white;
-    line-height: 2em;
-    border: 1px solid #dddddd;
-    font-weight: bold;
     font-size: 1em;
     cursor: pointer;
     margin-top: 15px;
-    position: absolute;
+    outline: none;
 
-    &:hover{
-        background: tomato;
-        border: none;
+    &.primary {
+        background: #5ce500;
+        font-size: 1.5em;
+        &:hover{
+            background: tomato;
+            border: none;
+        }
+    }
+
+    &.secondary {
+        background: #5ce500;
+        &:hover{
+            background: tomato;
+            border: none;
+        }
+    }
+
+    &.tertiary {
+        background: #e79315;
+        position: absolute;
+        &:hover{
+            background: tomato;
+            border: none;
+        }
     }
 }
 

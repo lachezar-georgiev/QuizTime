@@ -4,7 +4,7 @@
       <button (click)="onNextQuestion()"
           [disabled]="!(currentQuestion$ | async)?.isAnswered" 
           [ngClass]="{'hidden-element' : !(currentQuestion$ | async)?.isAnswered}"
-            class="tertiary">{{ showButtonLabel() }}
+            class="action-button tertiary">{{ showButtonLabel() }}
       </button>
   </div>
 
@@ -15,9 +15,21 @@
         <div class="container">
             <h2>A quiz is already in progress.</h2>
             <p>Start a new quiz and reset points?</p>
-          <button (click)="toggleModal(true)" class="secondary">Yes, start a new quiz!</button>
-          <button (click)="toggleModal(false)" class="tertiary">No, let me go back.</button>
+          <button (click)="toggleModal(true)" class="action-button secondary">Yes, start a new quiz!</button>
+          <button (click)="toggleModal(false)" class="action-button tertiary">No, let me go back.</button>
         </div>
       </div>
   </div>
+</div>
+
+<div [ngClass]="{
+  'modal-container': isGameOver,
+  'hidden-element' : !isGameOver}">  
+    <div class="modal-content">
+      <div class="container">
+          <h2>You've reached the end of the questions!</h2>
+        <button (click)="showConfetti()" class="action-button secondary">Yay!</button>
+        <button (click)="viewResults()" class="action-button secondary">Show results</button>
+      </div>
+    </div>
 </div>

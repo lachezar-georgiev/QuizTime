@@ -34,7 +34,7 @@
 
 </div>
 
-<button class="secondary"
+<button class="action-button secondary"
         [disabled]="!isRadioButtonChecked || question.isAnswered"
         [ngClass]="{'hidden-element' : isModalVisible, 'disabled-btn' : !isRadioButtonChecked || question.isAnswered }"
         (click)="toggleModal()">Check Answer
@@ -47,8 +47,8 @@
       <div class="modal-content">
         <div class="container">
             <h2>Confirm selected answer</h2>
-          <button (click)="onCompleteQuestion()" class="secondary">Yes, Confirm</button>
-          <button (click)="toggleModal()" class="tertiary">No, let me go back</button>
+          <button (click)="onCompleteQuestion()" class="action-button secondary">Yes, Confirm</button>
+          <button (click)="toggleModal()" class="action-button tertiary">No, let me go back</button>
         </div>
       </div>
     </div>

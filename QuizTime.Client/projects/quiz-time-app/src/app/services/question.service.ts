@@ -17,7 +17,7 @@ const Questions: Question[] = [
 })
 export class QuestionService implements OnDestroy {
 
-  private readonly secondsPerQestion: number = 10;
+  private readonly secondsPerQestion: number = 45;
   private readonly questions$$: BehaviorSubject<Question[]> = new BehaviorSubject<Question[]>(Questions);
   private readonly currentQuestion$$: BehaviorSubject<Question> = new BehaviorSubject<Question>(null);
   private readonly areAllQuestionsAnswered$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -27,8 +27,6 @@ export class QuestionService implements OnDestroy {
   private skip = 0;
   private interval;
 
-  public readonly areAllQuestionsAnswered$: Observable<boolean>;
-
   constructor(private httpClient: HttpClient) {
     this.subscription.add(
       this.httpClient.get('https://localhost:44334/api/Question')
@@ -37,7 +35,6 @@ export class QuestionService implements OnDestroy {
           this.currentQuestion$$.next(this.questions$$.value[0]);
         })
     );
-    this.areAllQuestionsAnswered$ = this.areAllQuestionsAnswered$$.asObservable();
   }
 
   setCurrentQuestion(question: Question): void {
@@ -82,6 +79,10 @@ export class QuestionService implements OnDestroy {
     const questionIndex = this.questions$$.value.indexOf(this.currentQuestion$$.value);
 
     return questionIndex === this.questions$$.value.length - 1;
+  }
+
+  areAllQuestionsAnswered(): Observable<boolean> {
+    return this.areAllQuestionsAnswered$$.asObservable();
   }
 
   disposeOfQuestions(): void {
