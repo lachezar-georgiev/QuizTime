@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { QuestionService } from './question.service';
 import { Question } from '../common/models/question';
+import { environment } from '../../environments/environment';
 
 describe('QuestionService', () => {
   let service: QuestionService;
@@ -32,20 +33,25 @@ describe('QuestionService', () => {
   });
 
   it('should get current question timer', () => {
-    service.getCurrentQuestionTImer().subscribe(result => expect(result).toEqual(10));
+    const secondsPerQuestion = 45;
+
+    service.getCurrentQuestionTImer().subscribe(result => expect(result).toEqual(secondsPerQuestion));
   });
 
   it('should make http call', () => {
-    const questionsRequest = httpMock.expectOne(`https://localhost:44334/api/Question`);
+    const questionsRequest = httpMock.expectOne(environment.apiUrl);
     expect(questionsRequest).toBeDefined();
     httpMock.verify();
   });
 
   it('should make http call with skip', () => {
-    httpMock.expectOne(`https://localhost:44334/api/Question`);
+    const skipValue = 5;
+    httpMock.expectOne(environment.apiUrl);
     service.disposeOfQuestions();
+
     service.getQuestions().subscribe(result => expect(result.length).toBe(0));
-    const questionsRequestWithSkip = httpMock.expectOne(`https://localhost:44334/api/Question?skip=5`);
+    const questionsRequestWithSkip = httpMock.expectOne(`${environment.apiUrl}?skip=${skipValue}`);
+
     expect(questionsRequestWithSkip).toBeDefined();
     httpMock.verify();
   });

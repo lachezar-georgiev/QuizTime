@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Question } from '../common/models/question';
+import { environment } from '../../environments/environment';
 
 const Questions: Question[] = [
   {
@@ -29,7 +30,7 @@ export class QuestionService implements OnDestroy {
 
   constructor(private httpClient: HttpClient) {
     this.subscription.add(
-      this.httpClient.get('https://localhost:44334/api/Question')
+      this.httpClient.get(environment.apiUrl)
         .subscribe((questions: Question[]) => {
           this.questions$$.next(questions);
           this.currentQuestion$$.next(this.questions$$.value[0]);
@@ -48,7 +49,7 @@ export class QuestionService implements OnDestroy {
 
   getQuestions(): Observable<Question[]> {
     if (this.skip > 0) {
-      this.httpClient.get(`https://localhost:44334/api/Question?skip=${this.skip}`)
+      this.httpClient.get(`${environment.apiUrl}?skip=${this.skip}`)
         .subscribe((questions: Question[]) => {
           if (questions.length) {
             this.questions$$.next(questions);

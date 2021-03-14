@@ -41,7 +41,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
   constructor(private questionService: QuestionService) {
     this.subscription.add(this.questionService.getCurrentQuestion()
       .subscribe((currentQuestion: Question) => {
-        // TODO: Double check if this is needed
         if (currentQuestion) {
           this.currentCorrectAnswer = currentQuestion.answer;
         }
