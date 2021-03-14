@@ -4,6 +4,4 @@ import { Component } from '@angular/core';
   selector: 'app-about',
   templateUrl: './about.component.html'
 })
-export class AboutComponent {
-  public repoPage = 'https://github.com/lachezar-georgiev/QuizTime';
-}
+export class AboutComponent {}
