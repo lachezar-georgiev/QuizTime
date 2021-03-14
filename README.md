@@ -27,17 +27,23 @@ The project can be run with either dotnet CLI or Visual Studio  2019.
 1. Click `OK`.
 1. Set the configuration to `Release`.
 1. Press `ctrl + F5`.
-    - Note: The first launch of the `QuizTime.Client` may take a while because the first time you run the project, `MSBuild` will trigger `npm install` to grab the npm packages. On slower machines this may crash. If that is the case navigate to `QuizTime\QuizTime.Client`, open a terminal and install the NPM packages manually  by typing `npm install`
+    - Note: If prompted, trust the IIS https developer certificate.
+    - Note2: The first launch of the `QuizTime.Client` may take a while because the first time you run the project, `MSBuild` will trigger `npm install` to grab the npm packages. On slower machines this may crash. If that is the case navigate to `QuizTime\QuizTime.Client`, open a terminal and install the NPM packages manually  by typing `npm install`
+1. A browser window should open and navigate you to:
+    - Client app: https://localhost:44340/
+    - Api: https://localhost:44334/swagger/index.html
 
 #### Dotnet CLI
 
 1. Open a terminal with elevated privileges.
 1. Navigate to the **QuizTime\QuizTime.Api** folder.
+1. Trust the IIS https developer certificate - type : `dotnet dev-certs https --trust`
 1. type `dotnet run QuizTime.Api.csproj -c Release`
 1. Navigate to **QuizTime\QuizTime.Client** folder
 1. type `dotnet run QuizTime.Client.csproj -c Release`.
     - Note: This step may take a while the first time you run the project, because `MSBuild` will trigger `npm install` to grab the npm packages.
-1. Open a browser and navigate to this URL: https://localhost:7001
+1. Open a browser and navigate to this URL: https://localhost:7001/
+1. The Api swagger can be accessed on https://localhost:44334/swagger/index.html
 
 ### Tests
 
