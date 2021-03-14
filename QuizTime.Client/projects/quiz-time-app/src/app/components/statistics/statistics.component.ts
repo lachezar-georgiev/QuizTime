@@ -38,8 +38,8 @@ export class StatisticsComponent implements OnDestroy {
           results.forEach((singleResult: number[]) => {
             const correctAnswers: number[] = singleResult.filter((value: number) => value > 0);
             const wrongAnswers: number[] = singleResult.filter((value: number) => value <= 0);
-            const answers = [correctAnswers.length, wrongAnswers.length]
-            const result = new Result(this.quizResultLabels, answers, this.quizChartType, this.quizResultColors)
+            const answers = [correctAnswers.length, wrongAnswers.length];
+            const result = new Result(this.quizResultLabels, answers, this.quizChartType, this.quizResultColors);
             this.quizResults.push(result);
           });
         }

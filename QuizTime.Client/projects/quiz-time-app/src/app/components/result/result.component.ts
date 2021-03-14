@@ -8,7 +8,7 @@ import { Result } from './models/result';
 export class ResultComponent {
 
   @Input()
-  public result: Result = new Result([], [], '', [])
+  public result: Result = new Result([], [], '', []);
 
   @Input()
   public quizNumber: number;

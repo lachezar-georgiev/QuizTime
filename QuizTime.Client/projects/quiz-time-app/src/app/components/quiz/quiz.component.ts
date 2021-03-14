@@ -43,15 +43,12 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.quizService.startQuiz();
         this.questionService.getQuestions();
       }
-      // else if (this.isGameOver) {
-      //   // TODO: show conrats message
-      // }
       else {
         this.isModalVisible = true;
       }
   }
 
-  onNextQuestion() {
+  onNextQuestion(): void {
     if (!this.questionService.isLastQuestion()) {
       this.questionService.moveToNextQuestion();
     } else {
@@ -69,11 +66,11 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.router.navigate(['/statistics']);
   }
 
-  getFreshQuestions() {
+  getFreshQuestions(): void {
     this.questionService.getQuestions();
   }
 
-  toggleModal(startNewQuiz: boolean) {
+  toggleModal(startNewQuiz: boolean): void {
     this.isModalVisible = !this.isModalVisible;
 
     if (startNewQuiz) {
@@ -84,7 +81,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
-  addQuestionResult(questionResult: number) {
+  addQuestionResult(questionResult: number): void {
     this.quizService.addResult(questionResult, this.questionCategory);
   }
 

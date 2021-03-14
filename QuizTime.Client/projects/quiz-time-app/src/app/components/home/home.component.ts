@@ -10,7 +10,7 @@ export class HomeComponent {
 
   constructor(private router: Router) { }
 
-  startNewQuiz() {
+  startNewQuiz(): void {
     this.router.navigate(['/quiz']);
   }
 

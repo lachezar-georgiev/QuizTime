@@ -30,10 +30,10 @@ export class QuestionComponent implements OnInit, OnDestroy {
   @Output()
   public questionResultChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  public isRadioButtonChecked: boolean = false;
+  public isRadioButtonChecked = false;
   public currentSelectedAnswer: string;
   public currentCorrectAnswer: string;
-  public isModalVisible: boolean = false;
+  public isModalVisible = false;
   public questionIds: string[] = ['A', 'B', 'C', 'D'];
   public questionTimer: number;
 
@@ -54,7 +54,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       }));
   }
 
-  onCompleteQuestion() {
+  onCompleteQuestion(): void {
     if (this.isModalVisible) {
       this.isModalVisible = !this.isModalVisible;
     }
@@ -62,14 +62,14 @@ export class QuestionComponent implements OnInit, OnDestroy {
     if (this.currentSelectedAnswer.toLowerCase() === this.currentCorrectAnswer.toLowerCase()) {
       this.onQuestionResultChanged(true);
     } else {
-      this.onQuestionResultChanged(false)
+      this.onQuestionResultChanged(false);
     }
 
     this.question.isAnswered = true;
     this.isRadioButtonChecked = false;
   }
 
-  onInput(currentSelectedAnswer: string) {
+  onInput(currentSelectedAnswer: string): void {
     this.isRadioButtonChecked = true;
     this.currentSelectedAnswer = currentSelectedAnswer;
   }
@@ -78,13 +78,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
     return this.currentSelectedAnswer === this.question.answer;
   }
 
-  toggleModal() {
+  toggleModal(): void {
     if (this.isRadioButtonChecked) {
       this.isModalVisible = !this.isModalVisible;
     }
   }
 
-  onQuestionResultChanged(questionResult: boolean) {
+  onQuestionResultChanged(questionResult: boolean): void {
     this.questionResultChanged.emit(questionResult);
   }
 
