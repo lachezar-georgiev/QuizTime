@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 body {
     margin: 0.25em;
     padding: 0.25em;
@@ -12,9 +14,9 @@ body {
 
 .action-button {
     border-radius: 10px;
-    color: white;
+    color: $white;
     line-height: 2em;
-    border: 1px solid #dddddd;
+    border: 1px solid $softgray;
     font-weight: bold;
     font-size: 1em;
     font-size: 1em;
@@ -23,36 +25,37 @@ body {
     outline: none;
 
     &.primary {
-        background: #5ce500;
+        background: $green;
         font-size: 1.5em;
         &:hover{
-            background: tomato;
+            background: $tomato;
             border: none;
         }
     }
 
     &.secondary {
-        background: #5ce500;
+        background: $green;
         &:hover{
-            background: tomato;
+            background: $tomato;
             border: none;
+        }
+        &.disabled-btn {
+            cursor: not-allowed;
+            background-color: $gray;
         }
     }
 
     &.tertiary {
-        background: #e79315;
+        background: $orange;
         position: absolute;
         &:hover{
-            background: tomato;
+            background: $tomato;
             border: none;
         }
     }
 }
 
-.disabled-btn {
-    cursor: not-allowed;
-    background-color: gray;
-}
+
 
 .hidden-element {
     display: none;

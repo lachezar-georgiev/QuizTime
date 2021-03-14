@@ -1,3 +1,5 @@
+@import '../../../variables.scss';
+
 .question-page-container {
     flex: 1;
     margin: 0px 32px;
@@ -13,7 +15,7 @@
     left: 50%;
     top: 30%;
     transform: translate(-50%, -50%);
-    background: white;
+    background: $white;
     box-shadow: 0 0 60px 10px rgba(0, 0, 0, 0.9);
   
       .modal-content {

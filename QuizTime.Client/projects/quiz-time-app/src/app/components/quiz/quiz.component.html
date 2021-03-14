@@ -1,4 +1,4 @@
-<div [ngClass]="{'modal-overlay' : isModalVisible}">
+<div [ngClass]="{'modal-overlay' : isModalVisible || isGameOver}">
   <div class="question-page-container">
       <app-question [question]="(currentQuestion$ | async)" [questionScore]="!(currentQuestion$ | async)?.isAnswered" (questionResultChanged)="addQuestionResult($event)"></app-question>
       <button (click)="onNextQuestion()"
