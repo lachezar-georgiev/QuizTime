@@ -12,6 +12,7 @@ import { HomeComponent } from './components/home/home.component';
 import { QuestionComponent } from './components/question/question.component';
 import { ResultComponent } from './components/result/result.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
     HomeComponent,
     QuestionComponent,
     ResultComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
